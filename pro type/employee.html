@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee List</title>
+  <style>
+    body {
+        background-color: #f8f8f8;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        margin-top: 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .btn-container {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .add-btn,
+    .back-btn {
+        padding: 8px 20px;
+        font-size: 14px;
+        background-color: #333;
+        border: none;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    .add-btn:hover,
+    .back-btn:hover {
+        background-color: #555;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>SSN</th>
+                    <th>Bank Info</th>
+                    <th>Login Number</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTable">
+                <!-- Employee data will be dynamically added here -->
+            </tbody>
+        </table>
+        <div class="btn-container">
+          <button class="add-btn" onclick="goToAddEmployee()">Add Employee</button>
+          <button class="back-btn" onclick="goBack()">Section Page</button>
+      </div>
+    </div>
+
+    <script>
+          function goBack() {
+            window.location.href = "dashboard.html";
+        }
+
+        function goToAddEmployee() {
+            window.location.href = "add_employee.html";
+        }
+
+        // JavaScript code here
+        // Retrieve employees from local storage (replace this with your own data retrieval mechanism)
+        const employees = JSON.parse(localStorage.getItem('employees')) || [];
+
+        // Get the employee table body element
+        const employeeTable = document.getElementById('employeeTable');
+
+        // Function to generate the HTML for displaying employee data in the table
+        function generateEmployeeHTML(employee) {
+            return `
+                <tr>
+                    <td>${employee.fullName}</td>
+                    <td>${employee.role}</td>
+                    <td>${employee.phoneNumber}</td>
+                    <td>${employee.address}</td>
+                    <td>${employee.ssn}</td>
+                    <td>${employee.bankInfo}</td>
+                    <td>${employee.loginNumber}</td>
+                    <td><button class="delete-btn" onclick="deleteEmployee('${employee.loginNumber}')">Delete</button></td>
+                </tr>
+            `;
+        }
+
+        // Function to render the employee table
+        function renderEmployeeTable() {
+            // Clear existing table rows
+            employeeTable.innerHTML = '';
+
+            // Generate HTML for each employee and append to the table
+            employees.forEach(function(employee) {
+                employeeTable.innerHTML += generateEmployeeHTML(employee);
+            });
+        }
+
+        // Function to delete an employee
+        function deleteEmployee(loginNumber) {
+            // Find the employee with the specified login number
+            const index = employees.findIndex(function(employee) {
+                return employee.loginNumber === loginNumber;
+            });
+
+            // Remove the employee from the array
+            employees.splice(index, 1);
+
+            // Save the updated employee list to local storage (replace this with your own data storage mechanism)
+            localStorage.setItem('employees', JSON.stringify(employees));
+
+            // Re-render the employee table
+            renderEmployeeTable();
+        }
+
+        // Render the initial employee table
+        renderEmployeeTable();
+    </script>
+</body>
+</html>
+

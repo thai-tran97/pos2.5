@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cashier Page</title>
+  <style>
+    /* CSS styles here */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .service-panel {
+      flex: 1;
+      border-right: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    .service-tabs {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .service-tab {
+      padding: 10px 20px;
+      background-color: #eee;
+      cursor: pointer;
+    }
+
+    .service-tab.active {
+      background-color: #ccc;
+    }
+
+    .service-buttons {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .service-button {
+      padding: 10px 20px;
+      margin: 5px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .receipt-panel {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .receipt-body {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .receipt-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .receipt-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .num-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+    }
+
+    .num-pad button {
+      padding: 10px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .total-amount {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .payment-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .payment-options button {
+      padding: 10px;
+      background-color: #ccc;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .payment-options button.active {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .payment-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="service-panel">
+      <div class="service-tabs">
+        <div class="service-tab active" onclick="switchTab(1)">Spa Pedicure</div>
+        <div class="service-tab" onclick="switchTab(2)">Natural Manicure</div>
+        <div class="service-tab" onclick="switchTab(3)">Dipping Powder</div>
+        <div class="service-tab" onclick="switchTab(4)">Acrylic</div>
+        <div class="service-tab" onclick="switchTab(5)">Kid</div>
+        <div class="service-tab" onclick="switchTab(6)">F&amp;W</div>
+        <div class="service-tab" onclick="switchTab(7)">Add-On Services</div>
+      </div>
+      <div class="service-buttons">
+        <!-- Service buttons will be generated dynamically -->
+      </div>
+    </div>
+    <div class="receipt-panel">
+      <div class="receipt-header">
+        <h2>Receipt</h2>
+        <button onclick="clearReceipt()">Clear</button>
+      </div>
+      <div class="receipt-body">
+        <!-- Receipt items will be dynamically added here -->
+      </div>
+      <div class="receipt-footer">
+        <div class="num-pad">
+          <button onclick="appendToPriceField('1')">1</button>
+          <button onclick="appendToPriceField('2')">2</button>
+          <button onclick="appendToPriceField('3')">3</button>
+          <button onclick="appendToPriceField('4')">4</button>
+          <button onclick="appendToPriceField('5')">5</button>
+          <button onclick="appendToPriceField('6')">6</button>
+          <button onclick="appendToPriceField('7')">7</button>
+          <button onclick="appendToPriceField('8')">8</button>
+          <button onclick="appendToPriceField('9')">9</button>
+          <button onclick="appendToPriceField('0')">0</button>
+          <button onclick="removeLastDigit()">DEL</button>
+          <button onclick="checkout()">Checkout</button>
+        </div>
+        <div>
+          <label for="total-amount">Total:</label>
+          <div class="total-amount">$0.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript code here
+    let currentTab = 1;
+    let receiptItems = [];
+    let totalAmount = 0;
+
+    const serviceData = {
+      1: [
+        { name: "Service 1", price: 10 },
+        { name: "Service 2", price: 20 },
+        { name: "Service 3", price: 30 },
+        // ... more services
+      ],
+      2: [
+        { name: "Service A", price: 15 },
+        { name: "Service B", price: 25 },
+        { name: "Service C", price: 35 },
+        // ... more services
+      ],
+      3: [
+        { name: "Service X", price: 12 },
+        { name: "Service Y", price: 22 },
+        { name: "Service Z", price: 32 },
+        // ... more services
+      ],
+      // ... more tabs and services
+    };
+
+    function switchTab(tab) {
+      currentTab = tab;
+      renderServiceButtons();
+    }
+
+    function renderServiceButtons() {
+      const serviceButtonsContainer = document.querySelector(".service-buttons");
+      serviceButtonsContainer.innerHTML = "";
+
+      const services = serviceData[currentTab];
+      services.forEach(service => {
+        const button = document.createElement("button");
+        button.classList.add("service-button");
+        button.textContent = service.name;
+        button.onclick = () => addToReceipt(service);
+        serviceButtonsContainer.appendChild(button);
+      });
+    }
+
+    function addToReceipt(service) {
+      const receiptBody = document.querySelector(".receipt-body");
+
+      const item = document.createElement("div");
+      item.classList.add("receipt-item");
+
+      const itemName = document.createElement("span");
+      itemName.textContent = service.name;
+      item.appendChild(itemName);
+
+      const itemPrice = document.createElement("span");
+      itemPrice.textContent = "$" + service.price.toFixed(2);
+      item.appendChild(itemPrice);
+
+      receiptBody.appendChild(item);
+
+      receiptItems.push(service);
+      totalAmount += service.price;
+
+      updateTotalAmount();
+    }
+
+    function updateTotalAmount() {
+      const totalAmountElement = document.querySelector(".total-amount");
+      totalAmountElement.textContent = "$" + totalAmount.toFixed(2);
+    }
+
+    function clearReceipt() {
+      const receiptBody = document.querySelector(".receipt-body");
+      receiptBody.innerHTML = "";
+
+      receiptItems = [];
+      totalAmount = 0;
+
+      updateTotalAmount();
+    }
+
+    function appendToPriceField(digit) {
+      const priceField = document.querySelector(".num-pad button:last-child");
+      priceField.insertAdjacentHTML("beforebegin", digit);
+    }
+
+    function removeLastDigit() {
+      const priceField = document.querySelector(".num-pad button:last-child");
+      const priceFieldValue = priceField.textContent;
+
+      if (priceFieldValue.length > 0) {
+        priceField.textContent = priceFieldValue.slice(0, -1);
+      }
+    }
+
+    function checkout() {
+      const paymentModal = document.createElement("div");
+      paymentModal.classList.add("payment-modal");
+
+      const paymentOptions = document.createElement("div");
+      paymentOptions.classList.add("payment-options");
+
+      const cashButton = document.createElement("button");
+      cashButton.textContent = "CASH";
+      cashButton.onclick = () => handlePayment("CASH");
+      paymentOptions.appendChild(cashButton);
+
+      const cardButton = document.createElement("button");
+      cardButton.textContent = "CARD";
+      cardButton.onclick = () => handlePayment("CARD");
+      paymentOptions.appendChild(cardButton);
+
+      const onlineButton = document.createElement("button");
+      onlineButton.textContent = "ONLINE";
+      onlineButton.onclick = () => handlePayment("ONLINE");
+      paymentOptions.appendChild(onlineButton);
+
+      paymentModal.appendChild(paymentOptions);
+      document.body.appendChild(paymentModal);
+    }
+
+    function handlePayment(paymentOption) {
+      let amountGiven;
+      if (paymentOption === "CASH") {
+        amountGiven = prompt("Enter the amount given by the customer:");
+        amountGiven = parseFloat(amountGiven);
+        if (isNaN(amountGiven) || amountGiven < totalAmount) {
+          alert("Invalid amount entered.");
+          return;
+        }
+      }
+
+      let change = 0;
+      if (paymentOption === "CASH") {
+        change = amountGiven - totalAmount;
+        alert("Change to give back: $" + change.toFixed(2));
+      }
+
+      // Here, you can perform further actions with the payment information
+      // such as storing it or displaying it in a separate window.
+
+      clearReceipt();
+      document.querySelector(".payment-modal").remove();
+    }
+
+    switchTab(currentTab);
+  </script>
+</body>
+</html>

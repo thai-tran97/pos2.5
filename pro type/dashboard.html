@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-image: url("c.jpg");  
+      background-repeat:no-repeat ;
+      background-size:cover ;  
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .dashboard-container {
+      text-align: center;
+      background-color: rgb(220, 215, 215);
+      padding: 20px;
+      margin-top: 200px;
+      border-radius: 8px;
+      align-items: center;  
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 500px;
+      height: 320px;
+    }
+
+    .dashboard-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .dashboard-button {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      background-color: #eee;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .dashboard-button img {
+      max-width: 60px;
+      max-height: 60px;
+      margin-bottom: 5px;
+    }
+
+    .dashboard-button:hover {
+      background-color: #ccc;
+      transform: scale(1.05);
+    }
+
+    .back-button img {
+      width: 60px;
+      height: 60px;
+      
+      
+    
+    }
+  </style>
+  <title>Dashboard</title>
+</head>
+<div class="back-button" onclick="navigateToPage('index.html')">
+        <img src="back.png" alt="Button 1">
+      </div>
+
+<body>
+  
+    </div>  
+  <div class="dashboard-container">
+    <h1>Dashboard</h1>
+    <div class="dashboard-buttons">
+      <div class="dashboard-button" onclick="navigateToPage('page1.html')">
+        <img src="cale.png" alt="Button 1">
+        Calendar
+      </div>
+      <div class="dashboard-button" onclick="navigateToPage('check.html')">
+        <img src="cas.png" alt="Button 2">
+       Check-Out
+      </div>
+      <div class="dashboard-button" onclick="navigateToPage('page3.html')">
+        <img src="clock.png" alt="Button 3">
+        Clock-in
+      </div>
+      <div class="dashboard-button" onclick="navigateToPage('employee.html')">
+        <img src="em.png" alt="Button 4">
+        Employess
+      </div>
+      <div class="dashboard-button" onclick="navigateToPage('page5.html')">
+        <img src="button5.png" alt="Button 5">
+        Button 5
+      </div>
+      <div class="dashboard-button" onclick="navigateToPage('cal.html')">
+        <img src="se.png" alt="Button 6">
+        Settings
+      </div>
+    </div>
+    
+  </div>
+
+  <script>
+    function navigateToPage(page) {
+      window.location.href = page;
+    }
+  </script>
+</body>
+</html>

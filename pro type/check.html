@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cashier Page</title>
+  <style>
+    /* CSS Styles */
+
+    /* Reset styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+        text-align: center;
+        font-size: 24px;
+    }
+    p{
+        text-align: center;
+        font-size: 12px;
+    }
+    h2{
+        text-align: center;
+        padding-bottom: 13px ;
+        color: white;
+    }
+    /* Main container */
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      height: 100vh;
+    }
+
+    /* Left section */
+    .left-section {
+      flex: 1;
+      padding: 20px;
+      background-color: rgb(111, 111, 111);
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    /* Tab container */
+    .tab-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background-color: rgb(111, 111, 111);
+      border-top-right-radius: 110%;
+      border-top-left-radius: 110px;
+    }
+
+    /* Individual tab */
+    .tab {
+      padding: 40px 0px ;
+      margin: 5px;
+      height: 100px;
+      width: 100px;
+      text-align: center;
+      background-color: rgb(167, 0, 86);
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    /* Active tab */
+    .tab.active {
+      background-color: rgb(133, 0, 0);
+     
+    }
+
+    /* Button container */
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    /* Service button */
+    .button {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Right section */
+    .right-section {
+      flex: 1;
+      padding: 20px;
+      background-color: rgb(122, 60, 60);
+      height: 820px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    /* Recipe list */
+    .recipe-list {
+
+      width: 450px;
+      height: 400px;
+      overflow-y: auto;
+      border: 5px solid rgb(240, 99, 99);
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 0;
+      margin-left: 90px;
+      background-color: white;
+    }
+
+    /* Recipe item */
+    .recipe-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
+      border-bottom: 1px solid #ccc;
+      text-decoration: none;
+    }
+
+    /* Total container */
+    .total-container {
+     
+      align-items: center;
+    }
+
+    /* Button container in total section */
+    .total-container .button-container {
+      display: flex;
+      padding-right: 50px;
+      
+    }
+
+    /* Total label */
+    .total-label {
+        
+    font-size: 24px;    
+    padding-left: 300px;
+    font-weight: bold;
+    
+    }
+
+    /* Total amount */
+    .total-amount {
+      padding-right: px;  
+      color: #fff;
+     
+    }
+
+    /* Clear button */
+    .button.clear {
+     
+    }
+
+    /* Checkout button */
+    .button.checkout {
+    
+    }
+    .entered-amount{
+      width: 300px;
+      margin-bottom: 20px;
+    }
+    .en-btns, .can-btns, .cla-btns, .co-btns{
+      margin: 0px;
+      padding: 0px;
+      height: 50px;
+      width: 80px;
+    }
+    .en-btns{
+      background-color: green;
+    }
+    .cla-btns{
+      background-color: yellow;
+    }
+    .can-btns{
+      background-color: red;
+    }
+    .pad-c{
+      padding-left: 200px;
+
+      
+     
+    }
+    .co-btns{
+      background-color: rgb(0, 253, 89)4;
+    }
+    .num-pad {
+      display: flex;
+
+     margin-bottom: 10px;
+      
+      
+    }
+    .num-btn {
+      text-align: center;
+      width: 50px;
+      height: 50px;
+      margin: 0 5px;
+      font-size: 18px;
+      
+      background-color: #fff;
+      color: rgb(0, 0, 0);
+     
+    }
+    .num-btn :hover{
+      color: gray;
+    }
+
+    .break{
+      flex-basis: 100%;
+      height: 0;
+    }
+
+    .payment-options button.active {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .payment-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  
+  </style>
+</head>
+
+<body>
+    <h1>Cashier</h1>
+    <div class="btn-container">
+        <button class="back-btn" onclick="goBack('index.html')">Home</button>
+    </div>
+   
+  <div class="container">
+    <div class="left-section">
+      <div class="tab-container">
+        <div class="tab active" onclick="switchTab(1)">Spa Pedicure</div>
+        <div class="tab" onclick="switchTab(2)">Natural Manicure</div>
+        <div class="tab" onclick="switchTab(3)">Dipping Powder</div>
+        <div class="tab" onclick="switchTab(4)">Acrylic</div>
+        <div class="tab" onclick="switchTab(5)">Kid Service</div>
+        <div class="tab" onclick="switchTab(6)">Facial & Waxing</div>
+        <div class="tab" onclick="switchTab(7)">Additional Service</div>
+      </div>
+      <div class="button-container" id="buttonContainer"></div>
+    </div>
+    <div class="right-section">
+     <h2>Recipe</h2>
+
+      <div class="recipe-list" id="recipeList"><h1> Wellcom to Hot Nail Salon</h1>
+        <p>21219 Sherman Way Canga Park CA, 91303</p>
+        <p>(818) 456-4276</p>
+        <p>---------------------------------------------------------------------------------------</p>
+
+      </div>
+      <div class="total-container">
+        <div class="total-label">Total: $<span class="total-amount" id="totalAmount"> 0.00</span> </div>
+         <div class="cp">   
+          <div class="pad-c">
+            <input type="text" id="item-price" placeholder="Item Price" readonly class="entered-amount">
+
+                <div class="num-pad">
+                  <button  onclick="addToID(1)" class="num-btn">1</button>
+                  <button onclick="addToID(2)" class="num-btn">2</button>
+                  <button onclick="addToID(3)" class="num-btn">3</button>
+                  <button class="en-btns " onclick="checkout()">Enter</button>
+                </div>
+                <div class="num-pad">
+                  <button onclick="addToID(4)" class="num-btn">4</button>
+                  <button onclick="addToID(5)" class="num-btn">5</button>
+                  <button onclick="addToID(6)" class="num-btn">6</button>
+                  <button class="cla-btns" onclick="clearPasscode()">clear</button>            
+
+                </div>
+                <div class="num-pad">
+                  <button onclick="addToID(7)" class="num-btn">7</button>
+                
+                  <button onclick="addToID(8)" class="num-btn">8</button>
+                  <button onclick="addToID(9)" class="num-btn">9</button>
+                  <button class="can-btns" onclick="addItemToCart()">cancel</button>            
+
+                </div>
+                <div class="num-pad">
+                  <button class="num-btn"></button>
+                  <button onclick="addToID(0)" class="num-btn">0</button>
+                  <button class="num-btn"></button>
+                  <button class="can-btns" onclick="checkout()">Checkout</button>
+
+                </div> 
+            </div>
+        </div>
+          
+    </div>
+
+  </div>
+  
+
+  <script>
+    // JavaScript code
+    let password = '';
+
+function appendToPassword(number) {
+  password += number;
+  updatePasswordInput();
+}
+
+function clearPassword() {
+  password = '';
+  updatePasswordInput();
+}
+
+function deleteLastCharacter() {
+  password = password.slice(0, -1);
+  updatePasswordInput();
+}
+
+    function addToID(number) {
+      var employeeId = document.getElementById("item-price");
+      employeeId.value += number;
+    }
+    
+    function goBack() {
+            window.location.href = "selcadm.html";
+    }
+    // Service data for each tab
+    const serviceData = [
+      {
+        tab: 1,
+        services: [
+          { name: "Regular Pedicure", price: 30.00 },
+          { name: "Spa Gel Peducure", price: 45.00 },
+          { name: "Deluxe Spa Peducure", price: 50.00 },
+          { name: "Hot Signature Spa Pedicure", price: 60.00 },
+          { name: "Hot Deluex Spa Pedicure", price: 60.00 },
+          // Add more services for tab 1
+        ]
+      },
+      {
+        tab: 2,
+        services: [
+          { name: "Service 4", price: 12.00 },
+          { name: "Service 5", price: 18.00 },
+          { name: "Service 6", price: 22.00 },
+          // Add more services for tab 2
+        ]
+      },
+      {
+        tab: 3,
+        services: [
+          { name: "Service 4", price: 12.00 },
+          { name: "Service 5", price: 18.00 },
+          { name: "Service 6", price: 22.00 },
+          // Add more services for tab 2
+        ]
+      }, 
+      {
+        tab: 4,
+        services: [
+          { name: "Service 4", price: 12.00 },
+          { name: "Service 5", price: 18.00 },
+          { name: "Service 6", price: 22.00 },
+          // Add more services for tab 2
+        ]
+      }, 
+      {
+        tab: 5,
+        services: [
+          { name: "Service 4", price: 12.00 },
+          { name: "Service 5", price: 18.00 },
+          { name: "Service 6", price: 22.00 },
+          // Add more services for tab 2
+        ]
+      }, 
+      {
+        tab: 6,
+        services: [
+          { name: "Service 4", price: 12.00 },
+          { name: "Service 5", price: 18.00 },
+          { name: "Service 6", price: 22.00 },
+          // Add more services for tab 2
+        ]
+      }, 
+      {
+        tab: 7,
+        services: [
+          { name: "Service 4", price: 12.00 },
+          { name: "Service 5", price: 18.00 },
+          { name: "Service 6", price: 22.00 },
+          // Add more services for tab 2
+        ]
+      }, 
+      // Add more tabs and their services
+    ];
+
+    let currentTab = 1;
+    let recipeItems = [];
+    let totalAmount = 0;
+
+   // Function to switch tabs
+        function switchTab(tab) {
+        currentTab = tab;
+        renderButtons();
+        updateActiveTab();
+        }
+
+        // Function to update active tab
+        function updateActiveTab() {
+        const tabs = document.getElementsByClassName("tab");
+
+        for (let i = 0; i < tabs.length; i++) {
+            if (i + 1 === currentTab) {
+            tabs[i].classList.add("active");
+            } else {
+            tabs[i].classList.remove("active");
+            }
+        }
+        }
+
+
+    // Function to render service buttons
+    function renderButtons() {
+      const buttonContainer = document.getElementById("buttonContainer");
+      buttonContainer.innerHTML = "";
+
+      const currentServices = serviceData.find(data => data.tab === currentTab).services;
+
+      for (let i = 0; i < currentServices.length; i++) {
+        const button = document.createElement("button");
+        button.className = "button";
+        button.innerText = currentServices[i].name + "  $" + currentServices[i].price.toFixed(2);
+        button.onclick = () => addToRecipe(currentServices[i]);
+        buttonContainer.appendChild(button);
+      }
+    }
+
+    // Function to add service to the recipe
+    function addToRecipe(service) {
+      const recipeList = document.getElementById("recipeList");
+
+      const item = document.createElement("div");
+      item.className = "recipe-item";
+      item.innerHTML = `
+        <div>${service.name}</div>
+        <div>$${service.price.toFixed(2)}</div>
+      `;
+
+      recipeList.appendChild(item);
+      recipeItems.push(service);
+      totalAmount += service.price;
+      updateTotal();
+
+      if (recipeItems.length > 9) {
+        recipeList.style.overflowY = "scroll";
+      }
+    }
+
+    // Function to clear the recipe
+    function clearRecipe() {
+      const recipeList = document.getElementById("recipeList");
+      recipeList.innerHTML = "";
+      recipeItems = [];
+      totalAmount = 0;
+      updateTotal();
+    }
+
+    // Function to update the total amount
+    function updateTotal() {
+      const totalAmountElement = document.getElementById("totalAmount");
+      totalAmountElement.innerText = " " + totalAmount.toFixed(2);
+    }
+
+    // Function to simulate checkout
+    function checkout() {
+      // Add your checkout logic here
+      alert("Checkout completed!");
+    }
+
+    // Initial rendering
+    renderButtons();
+
+    function checkout() {
+      const paymentModal = document.createElement("div");
+      paymentModal.classList.add("payment-modal");
+
+      const paymentOptions = document.createElement("div");
+      paymentOptions.classList.add("payment-options");
+
+      const cashButton = document.createElement("button");
+      cashButton.textContent = "CASH";
+      cashButton.onclick = () => handlePayment("CASH");
+      paymentOptions.appendChild(cashButton);
+
+      const cardButton = document.createElement("button");
+      cardButton.textContent = "CARD";
+      cardButton.onclick = () => handlePayment("CARD");
+      paymentOptions.appendChild(cardButton);
+
+      const onlineButton = document.createElement("button");
+      onlineButton.textContent = "ONLINE";
+      onlineButton.onclick = () => handlePayment("ONLINE");
+      paymentOptions.appendChild(onlineButton);
+
+      paymentModal.appendChild(paymentOptions);
+      document.body.appendChild(paymentModal);
+    }
+
+    function handlePayment(paymentOption) {
+      let amountGiven;
+      if (paymentOption === "CASH") {
+        amountGiven = prompt("Enter the amount given by the customer:");
+        amountGiven = parseFloat(amountGiven);
+        if (isNaN(amountGiven) || amountGiven < totalAmount) {
+          alert("Invalid amount entered.");
+          return;
+        }
+      }
+
+      let change = 0;
+      if (paymentOption === "CASH") {
+        change = amountGiven - totalAmount;
+        alert("Change to give back: $" + change.toFixed(2));
+      }
+
+      // Here, you can perform further actions with the payment information
+      // such as storing it or displaying it in a separate window.
+
+      clearReceipt();
+      document.querySelector(".payment-modal").remove();
+    }
+
+    function clearPasscode() {
+      enteredPasscode = '';
+      passcodeInput.value = '';
+      }
+  </script>
+
+  
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-image: url("c.jpg");  
+      background-repeat:no-repeat ;
+      background-size:cover ;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+
+      font-family: Arial, sans-serif;
+    }
+
+    .login-container {
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0) ;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgb(255, 255, 255);
+      width: 300px;
+    }
+
+    .passcode-input {
+      margin-bottom: 20px;
+      
+    }
+    .inp{
+        background-color: rgb(185, 184, 184);
+        width: 150px;
+        
+    }
+
+    .numeric-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .key {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      background-color: rgb(216, 72, 72);
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 18px;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .key:hover {
+      background-color: rgb(232, 110, 110);
+      transform: scale(1.05);
+    }
+
+    .clock {
+      font-size: 26px;
+      margin-bottom: 5px;
+    }
+
+    .date {
+      font-size: 26px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+  </style>
+  <title>Login</title>
+</head>
+<body>
+  <div class="login-container">
+    <div class="clock" id="clock">00:00 <span class="am-pm">AM</span></div>
+    <div class="date" id="date">mm/dd/yyyy</div>
+    <h1>Login</h1>
+    <div class="passcode-input">
+      <input class="inp" placeholder="Enter Passcode" type="password" id="passcode" maxlength="4" readonly>
+    </div>
+    <div class="numeric-keypad">
+      <div class="key" onclick="appendDigit(1)">1</div>
+      <div class="key" onclick="appendDigit(2)">2</div>
+      <div class="key" onclick="appendDigit(3)">3</div>
+      <div class="key" onclick="appendDigit(4)">4</div>
+      <div class="key" onclick="appendDigit(5)">5</div>
+      <div class="key" onclick="appendDigit(6)">6</div>
+      <div class="key" onclick="appendDigit(7)">7</div>
+      <div class="key" onclick="appendDigit(8)">8</div>
+      <div class="key" onclick="appendDigit(9)">9</div>
+      <div class="key" onclick="clearPasscode()">Clear</div>
+      <div class="key" onclick="appendDigit(0)">0</div>
+      <div class="key" onclick="checkPasscode()">Go</div>
+    </div>
+  </div>
+  <script>
+    const passcodeInput = document.getElementById('passcode');
+    let enteredPasscode = '';
+
+    function appendDigit(digit) {
+      if (enteredPasscode.length < 4) {
+        enteredPasscode += digit;
+        passcodeInput.value = '*'.repeat(enteredPasscode.length);
+      }
+    }
+
+    function clearPasscode() {
+      enteredPasscode = '';
+      passcodeInput.value = '';
+    }
+
+    function checkPasscode() {
+      if (enteredPasscode === '6480') {
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('WRONG CODE. TRY AGAIN.');
+        clearPasscode();
+      }
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const amPm = hours >= 12 ? 'PM' : 'AM';
+      const formattedHours = hours % 12 || 12;
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      
+      const clockElement = document.getElementById('clock');
+      const amPmElement = clockElement.querySelector('.am-pm');
+      clockElement.textContent = `${formattedHours}:${formattedMinutes}`;
+      amPmElement.textContent = amPm;
+    }
+
+    function updateDate() {
+      const now = new Date();
+      const month = now.getMonth() + 1;
+      const day = now.getDate();
+      const year = now.getFullYear();
+      
+      const dateElement = document.getElementById('date');
+      dateElement.textContent = `${month}/${day}/${year}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+    updateDate();
+  </script>
+</body>
+</html>

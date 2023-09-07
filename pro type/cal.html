@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .setup-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 600px; /* Adjust the width as needed */
+    }
+
+    .setup-sidebar {
+      display: flex;
+      flex-direction: column;
+      width: 150px;
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .setup-tab {
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 8px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .setup-tab:hover {
+      background-color: #555;
+    }
+
+    .setup-content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .setup-content h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .back-button {
+      margin-top: auto; /* Push the button to the bottom of the sidebar */
+      text-align: center;
+    }
+
+    /* Time and Date settings */
+    .time-date-settings {
+      margin-top: 20px;
+    }
+
+    /* Theme and Language settings */
+    .theme-lang-settings {
+      margin-top: 20px;
+    }
+
+    /* Style for language selection */
+    select {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
+  <title>Setup</title>
+</head>
+<body>
+  <div class="setup-container">
+    <div class="setup-sidebar">
+      <div class="setup-tab" onclick="showTab('general')">General</div>
+      <div class="setup-tab" onclick="showTab('cashier')">Cashier Setup</div>
+      <div class="setup-tab" onclick="showTab('bank')">Bank Info</div>
+      <div class="setup-tab" onclick="showTab('admin')">Admin Setup</div>
+      
+      <!-- Back button at the bottom of the sidebar -->
+      <div class="back-button">
+        <a href="dashboard.html">Back to Dashboard</a>
+      </div>
+    </div>
+    <div class="setup-content" id="general-content">
+      <!-- Content for the General tab -->
+      <h1>General Settings</h1>
+      <div class="time-date-settings">
+        <h2>Time & Date Settings</h2>
+        <p>Select Time:</p>
+        <input type="time" id="timePicker">
+        <p>Select Date:</p>
+        <input type="date" id="datePicker">
+        <button onclick="setTimeAndDate()">Set Time & Date</button>
+      </div>
+      <div class="theme-lang-settings">
+        <h2>Theme & Language Settings</h2>
+        <p>Select Theme:</p>
+        <select id="themeSelect" onchange="setTheme()">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <!-- Add more theme options if needed -->
+        </select>
+        <p>Select Language:</p>
+        <select id="languageSelect" onchange="setLanguage()">
+          <option value="english">English</option>
+          <option value="spanish">Spanish</option>
+          <!-- Add more language options as needed -->
+        </select>
+      </div>
+    </div>
+    <div class="setup-content" id="cashier-content" style="display: none;">
+      <!-- Content for the Cashier Setup tab -->
+      <h1>Cashier Setup</h1>
+      <p>Cashier setup content...</p>
+    </div>
+    <div class="setup-content" id="bank-content" style="display: none;">
+      <!-- Content for the Bank Info tab -->
+      <h1>Bank Info</h1>
+      <p>Bank info content...</p>
+    </div>
+    <div class="setup-content" id="admin-content" style="display: none;">
+      <!-- Content for the Admin Setup tab -->
+      <h1>Admin Setup</h1>
+      <p>Admin setup content...</p>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      const tabs = document.querySelectorAll('.setup-tab');
+      const contents = document.querySelectorAll('.setup-content');
+
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      contents.forEach(content => {
+        content.style.display = 'none';
+      });
+
+      document.getElementById(tabName + '-content').style.display = 'block';
+      document.querySelector(`.setup-tab[data-tab="${tabName}"]`).classList.add('active');
+    }
+
+    function setTimeAndDate() {
+      const selectedTime = document.getElementById('timePicker').value;
+      const selectedDate = document.getElementById('datePicker').value;
+
+      // You can implement the logic to set the time and date throughout the POS here.
+      // For demonstration purposes, we'll display an alert.
+      alert(`Time and Date set to:\nTime: ${selectedTime}\nDate: ${selectedDate}`);
+    }
+
+    function setTheme() {
+      const selectedTheme = document.getElementById('themeSelect').value;
+
+      // You can implement the logic to change the theme throughout the POS here.
+      // For demonstration purposes, we'll display an alert.
+      alert(`Theme set to: ${selectedTheme}`);
+    }
+
+    function setLanguage() {
+      const selectedLanguage = document.getElementById('languageSelect').value;
+
+      // You can implement the logic to change the language throughout the POS here.
+      // For demonstration purposes, we'll display an alert.
+      alert(`Language set to: ${selectedLanguage}`);
+    }
+  </script>
+</body>
+</html>
