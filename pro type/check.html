@@ -255,6 +255,8 @@
         <div class="tab" onclick="switchTab(5)">Kid Service</div>
         <div class="tab" onclick="switchTab(6)">Facial & Waxing</div>
         <div class="tab" onclick="switchTab(7)">Additional Service</div>
+        
+        
       </div>
       <div class="button-container" id="buttonContainer"></div>
     </div>
@@ -528,7 +530,7 @@ function deleteLastCharacter() {
           return;
         }
       }
-
+      
       let change = 0;
       if (paymentOption === "CASH") {
         change = amountGiven - totalAmount;
