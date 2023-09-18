@@ -1,9 +1,20 @@
+'use client'
+
 import Image from 'next/image'
 import ImageButton from '@/components/ImageButton'
+import { useEffect, useState } from 'react';
 
 export default function Home() {
 
-  var date = new Date().toLocaleString();
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
@@ -13,10 +24,10 @@ export default function Home() {
       <div
         className="h-full w-full flex align-center items-center justify-center"
       >
-        <div className='date-time-banner' 
-            style={{position:"absolute", top:"50px", backgroundColor:"black", color: "white", border:"solid 2px black"}}
+        <div 
+          className='date-time-banner absolute top-24  text-white text-2xl'
         >
-            <h1>{date}</h1>
+            <h1>{time.toLocaleString()}</h1>
         </div>
         <div
           className="bg-gray-300 h-[28rem] w-[40rem] rounded-lg flex flex-col items-center"
@@ -33,7 +44,6 @@ export default function Home() {
             <ImageButton image="em.png" imageName="employee" name="Employee" link="employee"/>
             <ImageButton image="ad.png" imageName="admin" name="Admin" link="admin"/>
             <ImageButton image="se.png" imageName="setting" name="Setting" link="setting"/>
-
           </div>
         </div>
       </div>
